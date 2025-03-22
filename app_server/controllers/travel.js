@@ -1,7 +1,17 @@
-/**
- * app_server/controllers/travel.js
- */
+const fs = require('fs');
+const path = require('path');
+
+// GET travel page
 module.exports.travel = (req, res) => {
-    // With defaultLayout set to 'main', it'll use main.hbs for layout
-    res.render('travel');
+    // Build the file path to data/trips.json
+    const tripsFile = path.join(__dirname, '../../data/trips.json');
+    
+    // Read the file synchronously (for quick prototyping)
+    const trips = JSON.parse(fs.readFileSync(tripsFile, 'utf8'));
+    
+    // Render the 'travel' view, passing 'trips' into the template
+    res.render('travel', {
+        title: 'Travlr Getaways',
+        trips
+    });
 };

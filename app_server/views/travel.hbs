@@ -4,29 +4,15 @@
             <div class="body">
                 <h1>Travel</h1>
                 <ul id="sites">
-                    <li>
-                        <a href="/travel">
-                            <img src="/images/reef1.jpg" alt="Img">
-                        </a>
-                        <h2><a href="/travel">Gale Reef</a></h2>
-                        <p>
-                            Sed et augue lorem. ...
-                        </p>
-                    </li>
-                    <li>
-                        <a href="/travel"><img src="/images/reef2.jpg" alt="Img"></a>
-                        <h2><a href="/travel">Dawson’s Reef</a></h2>
-                        <p>
-                            Integer magna leo, ...
-                        </p>
-                    </li>
-                    <li>
-                        <a href="/travel"><img src="/images/reef3.jpg" alt="Img"></a>
-                        <h2><a href="/travel">Claire’s REEF</a></h2>
-                        <p>
-                            Donec sed felis risus. ...
-                        </p>
-                    </li>
+                    {{#each trips}}
+                        <li>
+                            <a href="/travel">
+                                <img src="/images/{{this.image}}" alt="Img">
+                            </a>
+                            <h2><a href="/travel">{{this.name}}</a></h2>
+                            <p>{{this.desc}}</p>
+                        </li>
+                    {{/each}}
                 </ul>
             </div>
         </div>
