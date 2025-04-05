@@ -13,7 +13,7 @@ const usersRouter = require('./app_server/routes/users');
 const travelRouter = require('./app_server/routes/travel');
 
 
-require('./app_server/models/db');
+require('./app_api/models/db');
 
 const app = express();
 
