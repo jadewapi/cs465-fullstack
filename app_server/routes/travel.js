@@ -1,11 +1,7 @@
-/**
- * app_server/routes/travel.js
- */
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/travel');
+const ctrlTravel = require('../controllers/travel');
 
-/* GET travel page. */
-router.get('/', controller.travel);
+router.get('/', ctrlTravel.travel);
 
 module.exports = router;
