@@ -1,17 +1,30 @@
-const fs = require('fs');
-const path = require('path');
+const travel = async (req, res) => {
+    const tripsEndpoint = 'http://localhost:3000/api/trips';
+    const options = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    };
+    
+    try {
+        const response = await fetch(tripsEndpoint, options);
+        const trips = await response.json();
+        
+        res.render('travel', {
+            title: 'Travlr Getaways',
+            trips
+        });
+    } catch (err) {
+        console.error('Failed to fetch trips:', err);
+        
+        res.render('travel', {
+            title: 'Travlr Getaways',
+            trips: []
+        });
+    }
+};
 
-// GET travel page
-module.exports.travel = (req, res) => {
-    // Build the file path to data/trips.json
-    const tripsFile = path.join(__dirname, '../../data/trips.json');
-    
-    // Read the file synchronously (for quick prototyping)
-    const trips = JSON.parse(fs.readFileSync(tripsFile, 'utf8'));
-    
-    // Render the 'travel' view, passing 'trips' into the template
-    res.render('travel', {
-        title: 'Travlr Getaways',
-        trips
-    });
+module.exports = {
+    travel
 };
