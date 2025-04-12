@@ -14,7 +14,7 @@ const travelRouter = require('./app_server/routes/travel');
 // Import the API router
 const apiRouter = require('./app_api/routes/index');
 
-// Connect to MongoDB using new path
+// Connect to MongoDB
 require('./app_api/models/db');
 
 const app = express();
@@ -36,19 +36,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/travel', travelRouter);
-app.use('/api', apiRouter); // 🔥 NEW: All API routes go under /api
+app.use('/api', apiRouter);
 
 // Catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // Error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   
