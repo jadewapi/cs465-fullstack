@@ -1,5 +1,5 @@
 <div class="card h-100 shadow-sm">
-  <div class="card-header fw-bold text-primary">{{ trip.name }}</div>
+  <div class="card-header">{{ trip.name }}</div>
 
   <img
     [src]="'assets/images/' + trip.image"
@@ -17,5 +17,10 @@
     </p>
 
     <p class="card-text" [innerHTML]="trip.description"></p>
+
+    <!-- Edit Trip button -->
+    <div>
+      <button (click)="editTrip(trip)" class="btn btn-info">Edit Trip</button>
+    </div>
   </div>
 </div>

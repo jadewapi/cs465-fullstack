@@ -54,8 +54,46 @@ const tripsAddTrip = async (req, res) => {
     }
 };
 
+// PUT: /trips/:tripCode - Updates an existing Trip
+const tripsUpdateTrip = async (req, res) => {
+    console.log(req.params); // Optional: For debugging
+    console.log(req.body);   // Optional: For debugging
+    
+    try {
+        const q = await Model.findOneAndUpdate(
+            { 'code': req.params.tripCode },
+            {
+                code: req.body.code,
+                name: req.body.name,
+                length: req.body.length,
+                start: req.body.start,
+                resort: req.body.resort,
+                perPerson: req.body.perPerson,
+                image: req.body.image,
+                description: req.body.description
+            },
+            { new: true } // <-- This ensures it returns the updated doc
+        ).exec();
+        
+        if (!q) {
+            return res
+                .status(400)
+                .json({ message: 'Trip not found or could not be updated.' });
+        } else {
+            return res
+                .status(201)
+                .json(q);
+        }
+    } catch (err) {
+        return res
+            .status(500)
+            .json({ error: 'An error occurred while updating the trip.', details: err });
+    }
+};
+
 module.exports = {
     tripsList,
     tripsFindByCode,
-    tripsAddTrip
+    tripsAddTrip,
+    tripsUpdateTrip
 };
