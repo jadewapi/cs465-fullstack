@@ -7,7 +7,7 @@ export const trips = [
     resort: "Emerald Bay, 3 stars",
     perPerson: "799.00",
     image: "reef1.jpg",
-    description: "<p>Gale Reef Sed et augue lorem. In sit amet placerat...</p>"
+    description: "<p>Gale Reef Sed et augue lorem. In sit amet placerat arcu...</p>"
   },
   {
     code: "DAWR210315",

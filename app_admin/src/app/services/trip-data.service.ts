@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { Trip } from '../models/trip';
+
 @Injectable({
   providedIn: 'root'
 })
 export class TripDataService {
 
-  private apiUrl = 'http://localhost:3000/api/trips'; // this should match your Express API
-
   constructor(private http: HttpClient) {}
 
-  getTrips(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getTrips(): Observable<Trip[]> {
+    const url = 'http://localhost:3000/api/trips';
+    return this.http.get<Trip[]>(url);
   }
 }
