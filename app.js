@@ -43,7 +43,8 @@ app.use('/api', (req, res, next) => {
       'Origin, X-Requested-With, Content-Type, Accept'
   );
   next();
-});
+}, apiRouter);
+
 
 // Routes
 app.use('/', indexRouter);

@@ -35,28 +35,23 @@ const tripsFindByCode = async (req, res) => {
 
 // Add Trip function
 const tripsAddTrip = async (req, res) => {
-    const g = await Trip
-        .create({
-                code: req.body.code,
-                name: req.body.name,
-                length: req.body.length,
-                start: req.body.start,
-                resort: req.body.resort,
-                perPerson: req.body.perPerson,
-                image: req.body.image,
-                description: req.body.description
-            },
-            (err, trip) => {
-                if (err) {
-                    return res
-                        .status(400)
-                        .json(err);
-                } else {
-                    return res
-                        .status(201)
-                        .json(trip);
-                }
-            });
+    try {
+        const newTrip = await Trip.create({
+            code: req.body.code,
+            name: req.body.name,
+            length: req.body.length,
+            start: req.body.start,
+            resort: req.body.resort,
+            perPerson: req.body.perPerson,
+            image: req.body.image,
+            description: req.body.description
+        });
+        
+        return res.status(201).json(newTrip);
+    } catch (err) {
+        console.error('Error creating trip:', err);
+        return res.status(400).json({ message: 'Failed to create trip', error: err.message });
+    }
 };
 
 module.exports = {
