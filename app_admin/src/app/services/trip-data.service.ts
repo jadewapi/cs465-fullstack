@@ -9,10 +9,19 @@ import { Trip } from '../models/trip';
 })
 export class TripDataService {
 
+  private apiBaseUrl = 'http://localhost:3000/api';
+
   constructor(private http: HttpClient) {}
 
+  // GET trips
   getTrips(): Observable<Trip[]> {
-    const url = 'http://localhost:3000/api/trips';
+    const url = `${this.apiBaseUrl}/trips`;
     return this.http.get<Trip[]>(url);
+  }
+
+  // POST trip
+  addTrip(trip: Trip): Observable<Trip> {
+    const url = `${this.apiBaseUrl}/trips`;
+    return this.http.post<Trip>(url, trip);
   }
 }

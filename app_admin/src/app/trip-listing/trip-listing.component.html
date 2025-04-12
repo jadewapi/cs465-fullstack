@@ -1,7 +1,11 @@
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-4 mb-4" *ngFor="let trip of trips">
-      <app-trip-card [trip]="trip" class="card-deck mt-2"></app-trip-card>
-    </div>
+<div class="row">
+  <div class="col-md-12 text-end mb-3">
+    <button class="btn btn-primary" (click)="addTrip()">Add Trip</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4 mb-4" *ngFor="let trip of trips">
+    <app-trip-card [trip]="trip"></app-trip-card>
   </div>
 </div>

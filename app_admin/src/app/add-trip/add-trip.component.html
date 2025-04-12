@@ -1,0 +1,15 @@
+<div class="col-md-4">
+  <h2 class="text-center">Add Trip</h2>
+  <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+    <!-- Repeat this block for each form field -->
+    <div class="form-group">
+      <label>Code:</label>
+      <input type="text" formControlName="code" placeholder="Code" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['code'].errors }">
+      <div *ngIf="submitted && f['code'].errors">
+        <div *ngIf="f['code'].errors?.['required']">Trip Code is required</div>
+      </div>
+    </div>
+    <!-- Add similar blocks for other fields: name, length, start, resort, perPerson, image, description -->
+    <button type="submit" class="btn btn-info">Save</button>
+  </form>
+</div>
