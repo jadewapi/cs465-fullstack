@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { TripDataService } from '../services/trip-data.service';
 
 @Component({
   selector: 'app-add-trip',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-trip.component.html',
   styleUrls: ['./add-trip.component.css']
 })
@@ -16,18 +20,18 @@ export class AddTripComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private tripService: TripDataService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.addForm = this.formBuilder.group({
-      code: ["", Validators.required],
-      name: ["", Validators.required],
-      length: ["", Validators.required],
-      start: ["", Validators.required],
-      resort: ["", Validators.required],
-      perPerson: ["", Validators.required],
-      image: ["", Validators.required],
-      description: ["", Validators.required],
+      code: ['', Validators.required],
+      name: ['', Validators.required],
+      length: ['', Validators.required],
+      start: ['', Validators.required],
+      resort: ['', Validators.required],
+      perPerson: ['', Validators.required],
+      image: ['', Validators.required],
+      description: ['', Validators.required],
     });
   }
 
@@ -46,5 +50,7 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  get f() { return this.addForm.controls; }
+  get f() {
+    return this.addForm.controls;
+  }
 }

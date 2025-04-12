@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { TripDataService } from '../services/trip-data.service';
 import { Trip } from '../models/trip';
+import { TripCardComponent } from '../trip-card/trip-card.component';
 
 @Component({
   selector: 'app-trip-listing',
+  standalone: true,
+  imports: [CommonModule, TripCardComponent],
   templateUrl: './trip-listing.component.html',
   styleUrls: ['./trip-listing.component.css'],
   providers: [TripDataService]
