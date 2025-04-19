@@ -43,7 +43,6 @@ export class TripDataService {
     });
   }
 
-  // 🔐 Auth methods
   public login(user: User): Promise<AuthResponse> {
     return this.makeAuthApiCall('login', user);
   }

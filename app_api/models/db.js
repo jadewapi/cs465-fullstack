@@ -4,7 +4,7 @@ const readLine = require('readline');
 const host = process.env.DB_HOST || '127.0.0.1';
 const dbURI = `mongodb://${host}/travlr`;
 
-// Connect to MongoDB (with slight delay to avoid race conditions)
+
 const connect = () => {
     setTimeout(() => mongoose.connect(dbURI, {}), 1000);
 };
@@ -22,7 +22,6 @@ mongoose.connection.on('disconnected', () => {
     console.log('🔌 Mongoose disconnected');
 });
 
-// Handle Ctrl+C on Windows
 if (process.platform === 'win32') {
     const rl = readLine.createInterface({
         input: process.stdin,
@@ -33,7 +32,6 @@ if (process.platform === 'win32') {
     });
 }
 
-// Graceful shutdown
 const gracefulShutdown = (msg) => {
     mongoose.connection.close(() => {
         console.log(`📴 Mongoose disconnected through ${msg}`);
@@ -55,11 +53,11 @@ process.on('SIGTERM', () => {
     process.exit(0);
 });
 
-// 👉 Register schemas BEFORE anything tries to use them
+
 require('./travlr');
 require('./user');
 
-// Now connect to the DB
+
 connect();
 
 module.exports = mongoose;

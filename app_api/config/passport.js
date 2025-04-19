@@ -2,7 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 
-// ✅ Ensure schema is registered BEFORE calling mongoose.model()
+
 require('../models/user');
 
 const User = mongoose.model('users');
