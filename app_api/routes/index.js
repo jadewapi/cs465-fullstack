@@ -1,31 +1,32 @@
-const express = require('express');           // Express app
-const router = express.Router();              // Router logic
+const express = require('express');
+const router = express.Router();
 
+const { expressjwt } = require('express-jwt');
 
-// Import the controllers
-const tripsController = require('../controllers/trips');
+const auth = expressjwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ['HS256'],
+    requestProperty: 'payload' // match what the tutorial uses
+});
+
 const authController = require('../controllers/authentication');
+const tripsController = require('../controllers/trips');
 
-// Define route for our trips endpoint
+
 router
     .route('/trips')
-    .get(tripsController.tripsList)             // GET method: list all trips
-    .post(tripsController.tripsAddTrip);        // POST method: add a new trip
+    .get(tripsController.tripsList)             // Public
+    .post(auth, tripsController.tripsAddTrip);  // Protected
 
-// Define route to get or update trip by tripCode
 router
     .route('/trips/:tripCode')
-    .get(tripsController.tripsFindByCode)       // GET method: single trip by code
-    .put(tripsController.tripsUpdateTrip);      // PUT method: update a trip by code
+    .get(tripsController.tripsFindByCode)       // Public
+    .put(auth, tripsController.tripsUpdateTrip); // Protected
 
-// Auth routes
+
 router
     .route('/login')
-    .post((req, res, next) => {
-        console.log('✅ /api/login route was hit');
-        next();
-    }, authController.login);
-
+    .post(authController.login);
 
 router
     .route('/register')

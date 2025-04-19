@@ -9,13 +9,13 @@ const logger = require('morgan');
 const passport = require('passport');
 const { engine } = require('express-handlebars');
 
-// Connect to MongoDB
+// ✅ Connect to MongoDB and load schemas
 require('./app_api/models/db');
 
-// Load Passport configuration
+// ✅ Configure Passport strategies
 require('./app_api/config/passport');
 
-// Import standard routers
+// Import standard page routers
 const indexRouter = require('./app_server/routes/index');
 const usersRouter = require('./app_server/routes/users');
 const travelRouter = require('./app_server/routes/travel');
@@ -41,24 +41,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(passport.initialize());
+app.use(passport.initialize()); // ✅ Passport initialized
 
-// Enable CORS for all routes
-app.use((req, res, next) => {
+// Enable CORS only for /api routes
+app.use('/api', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   next();
-});
+}, apiRouter);
 
-// 🔍 Log every incoming request
+// Logging for all requests (optional for debugging)
 app.use((req, res, next) => {
   console.log(`📨 Incoming: ${req.method} ${req.originalUrl}`);
   next();
 });
-
-// Mount API routes
-app.use('/api', apiRouter);
 
 // Regular page routes
 app.use('/', indexRouter);
@@ -66,23 +63,21 @@ app.use('/users', usersRouter);
 app.use('/travel', travelRouter);
 
 // Catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
-// Catch unauthorized errors (from Passport)
+// Catch unauthorized errors (JWT)
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
-    res
-        .status(401)
-        .json({ message: err.name + ': ' + err.message });
+    res.status(401).json({ message: `${err.name}: ${err.message}` });
   } else {
     next(err);
   }
 });
 
-// Error handler
-app.use(function (err, req, res, next) {
+// General error handler
+app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   

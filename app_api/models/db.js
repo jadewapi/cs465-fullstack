@@ -1,45 +1,45 @@
 const mongoose = require('mongoose');
-const host = process.env.DB_HOST || '127.0.0.1';
-const dbURI = `mongodb://${host}/travlr`;
 const readLine = require('readline');
 
-// Build the connection string and set a short delay before connecting
+const host = process.env.DB_HOST || '127.0.0.1';
+const dbURI = `mongodb://${host}/travlr`;
+
+// Connect to MongoDB (with slight delay to avoid race conditions)
 const connect = () => {
     setTimeout(() => mongoose.connect(dbURI, {}), 1000);
 };
 
-// Connection events
+// Log connection events
 mongoose.connection.on('connected', () => {
-    console.log(`Mongoose connected to ${dbURI}`);
+    console.log(`✅ Mongoose connected to ${dbURI}`);
 });
 
 mongoose.connection.on('error', err => {
-    console.log('Mongoose connection error: ', err);
+    console.error('❌ Mongoose connection error:', err);
 });
 
 mongoose.connection.on('disconnected', () => {
-    console.log('Mongoose disconnected');
+    console.log('🔌 Mongoose disconnected');
 });
 
-// Windows fix for Ctrl+C in terminal
+// Handle Ctrl+C on Windows
 if (process.platform === 'win32') {
-    const r1 = readLine.createInterface({
+    const rl = readLine.createInterface({
         input: process.stdin,
         output: process.stdout
     });
-    r1.on('SIGINT', () => {
-        process.emit("SIGINT");
+    rl.on('SIGINT', () => {
+        process.emit('SIGINT');
     });
 }
 
-// Graceful shutdown function
+// Graceful shutdown
 const gracefulShutdown = (msg) => {
     mongoose.connection.close(() => {
-        console.log(`Mongoose disconnected through ${msg}`);
+        console.log(`📴 Mongoose disconnected through ${msg}`);
     });
 };
 
-// Shutdown signals
 process.once('SIGUSR2', () => {
     gracefulShutdown('nodemon restart');
     process.kill(process.pid, 'SIGUSR2');
@@ -55,11 +55,11 @@ process.on('SIGTERM', () => {
     process.exit(0);
 });
 
-// Connect to the DB
-connect();
-
-// Import the schema
+// 👉 Register schemas BEFORE anything tries to use them
 require('./travlr');
 require('./user');
+
+// Now connect to the DB
+connect();
 
 module.exports = mongoose;
